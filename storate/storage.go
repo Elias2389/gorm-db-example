@@ -10,7 +10,7 @@ type dataBase struct {
 	db *gorm.DB
 }
 
-func NewDB(dns string) *gorm.DB {
+func New(dns string) *gorm.DB {
 	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 		panic(err)
