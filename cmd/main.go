@@ -18,12 +18,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// Create User
+	//createUser(db)
+
 	// List of users
-	findUsers(db)
+	//findUsers(db)
 
 	// User By id
-	findUserById(db)
+	//findUserById(db)
 
+	// Update select fields
+	updateById(db)
 }
 
 func findUsers(db *gorm.DB) {
@@ -43,10 +49,10 @@ func findUserById(db *gorm.DB) {
 }
 
 func createUser(db *gorm.DB) {
-	st := "main street2"
+	st := "main street5"
 	user := model.User{
-		Name:  "UserTest2",
-		Email: "email2@gmail.com",
+		Name:  "UserTest5",
+		Email: "email5@gmail.com",
 		Address: model.Address{
 			Street: &st,
 		}}
@@ -55,4 +61,12 @@ func createUser(db *gorm.DB) {
 	fmt.Println(user.ID)
 	fmt.Println(result.Error)
 	fmt.Println(result.RowsAffected)
+}
+
+func updateById(db *gorm.DB) {
+	user := model.User{}
+	user.ID = 4
+
+	db.Model(&user).Updates(
+		model.User{Name: "User number 4"})
 }
