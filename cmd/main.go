@@ -14,28 +14,42 @@ func main() {
 	db := storate.New(dns)
 
 	//Migration
-	db.AutoMigrate(&model.User{}, &model.Address{})
-
-	// First create
+	err := db.AutoMigrate(&model.User{}, &model.Address{})
+	if err != nil {
+		panic(err)
+	}
+	// List of users
 	findUsers(db)
+
+	// User By id
+	findUserById(db)
+
 }
 
-func findUsers(db *gorm.DB)  {
-	users := make([] model.User, 0)
+func findUsers(db *gorm.DB) {
+	fmt.Printf("Find users  \n")
+	users := make([]model.User, 0)
 	db.Find(&users)
-	for _, user:= range users {
+	for _, user := range users {
 		fmt.Printf("%d - %s \n", user.ID, user.Name)
 	}
+}
+
+func findUserById(db *gorm.DB) {
+	fmt.Printf("Find user By id  \n")
+	user := model.User{}
+	db.First(&user, 3)
+	fmt.Printf("%d - %s \n", user.ID, user.Name)
 }
 
 func createUser(db *gorm.DB) {
 	st := "main street2"
 	user := model.User{
-		Name: "UserTest2",
+		Name:  "UserTest2",
 		Email: "email2@gmail.com",
 		Address: model.Address{
-		Street: &st,
-	}}
+			Street: &st,
+		}}
 	result := db.Create(&user)
 
 	fmt.Println(user.ID)
